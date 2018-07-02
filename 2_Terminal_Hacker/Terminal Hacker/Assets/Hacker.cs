@@ -5,15 +5,16 @@ using UnityEngine;
 public class Hacker : MonoBehaviour
 {
     // Game config data
-    string[] lvl1Passwords = { "plane", "pilot", "lounge", "flying" };
-    string[] lvl2Passwords = { "airconditioning", "employee", "computer", "coding" };
-    string[] lvl3Passwords = { "food", "bartender", "garden", "beer" };
+    const string menuHint = "You may type 'menu' at any time.";
+    string[] level1Passwords = { "plane", "pilot", "lounge", "flying" };
+    string[] level2Passwords = { "Stan", "Kyle", "Kenny", "Cartman" };
+    string[] level3Passwords = { "food", "bartender", "garden", "beer" };
 
+    // Game state
     int level;
-    string password;
-
     enum Screen { MainMenu, Password, Win };
     Screen currentScreen;
+    string password;
 
     // Use this for initialization
     void Start()
@@ -21,53 +22,27 @@ public class Hacker : MonoBehaviour
         ShowMainMenu();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void ShowMainMenu()
     {
         currentScreen = Screen.MainMenu;
         Terminal.ClearScreen();
-        string menuIntroText = ("Welcome to the main menu\nWhat would you like to hack into?");
-        string menuOptions = ("1  - Airport\n2  - Workplace\n3  - Pub\n4  - Exit game");
-        Terminal.WriteLine(menuIntroText);
-        Terminal.WriteLine(menuOptions);
-        Terminal.WriteLine("Enter selection: ");
-    }
-    // TODO add case for input = 4
-    void RunMainMenu(string input)
-    {
-        switch (input)
-        {
-            case "1":
-                Terminal.WriteLine("You chose 1, Airport");
-                password = lvl1Passwords[1];
-                StartGame();
-                break;
-            case "2":
-                Terminal.WriteLine("You chose 2, Workplace");
-                password = lvl2Passwords[1];
-                StartGame();
-                break;
-            case "3":
-                Terminal.WriteLine("You chose 3, Pub");
-                password = lvl3Passwords[1];
-                StartGame();
-                break;
-            default:
-                Terminal.WriteLine("Please enter a valid input");
-                break;
-        }
+        Terminal.WriteLine("What would you like to hack into?");
+        Terminal.WriteLine("Press 1 for the Airport");
+        Terminal.WriteLine("Press 2 for South Park Studios");
+        Terminal.WriteLine("Press 3 for the Pub!");
+        Terminal.WriteLine("Enter your selection:");
     }
 
     void OnUserInput(string input)
     {
-        if (input == "menu") // we can always go to main menu
+        if (input == "menu") // we can always go direct to main menu
         {
             ShowMainMenu();
+        }
+        else if (input == "quit" || input == "close" || input == "exit")
+        {
+            Terminal.WriteLine("If on the web close the tab.");
+            Application.Quit();
         }
         else if (currentScreen == Screen.MainMenu)
         {
@@ -79,24 +54,120 @@ public class Hacker : MonoBehaviour
         }
     }
 
-    void StartGame()
+    void RunMainMenu(string input)
+    {
+        bool isValidLevelNumber = (input == "1" || input == "2" || input == "3");
+        if (isValidLevelNumber)
+        {
+            level = int.Parse(input);
+            AskForPassword();
+        }
+        else if (input == "007") // easter egg
+        {
+            Terminal.WriteLine("Please select a level Mr Bond!");
+        }
+        else
+        {
+            Terminal.WriteLine("Please choose a valid level");
+            Terminal.WriteLine(menuHint);
+        }
+    }
+
+    void AskForPassword()
     {
         currentScreen = Screen.Password;
-        Terminal.WriteLine("Please enter your password: ");
+        Terminal.ClearScreen();
+        SetRandomPassword();
+        Terminal.WriteLine("Enter your password, hint: " + password.Anagram());
+        Terminal.WriteLine(menuHint);
+    }
+
+    void SetRandomPassword()
+    {
+        switch (level)
+        {
+            case 1:
+                password = level1Passwords[Random.Range(0, level1Passwords.Length)];
+                break;
+            case 2:
+                password = level2Passwords[Random.Range(0, level2Passwords.Length)];
+                break;
+            case 3:
+                password = level3Passwords[Random.Range(0, level3Passwords.Length)];
+                break;
+            default:
+                Debug.LogError("Invalid level number");
+                break;
+        }
     }
 
     void CheckPassword(string input)
     {
         if (input == password)
         {
-            Terminal.WriteLine("Well done! You won!");
+            DisplayWinScreen();
         }
         else
         {
-            Terminal.WriteLine("Incorrect!");
-
+            AskForPassword();
         }
-
     }
 
+    void DisplayWinScreen()
+    {
+        currentScreen = Screen.Win;
+        Terminal.ClearScreen();
+        ShowLevelReward();
+        Terminal.WriteLine(menuHint);
+    }
+
+
+    void ShowLevelReward()
+    {
+        switch (level)
+        {
+            case 1:
+                Terminal.WriteLine("Take to the skies...");
+                Terminal.WriteLine(@"
+
+           __!__
+       _____(_)_____
+          !  !  !
+"
+                );
+                break;
+            case 2:
+                Terminal.WriteLine("YOU KILLED KENNY, YOU BASTARD!!");
+                Terminal.WriteLine("Play again for a greater challenge.");
+                Terminal.WriteLine(@"
+ 
+    .- <O> -.        .-====-.      ,-------.      .-=<>=-.
+   /_-\'''/-_\      / / '' \ \     |,-----.|     /__----__\
+  |/  o) (o  \|    | | ')(' | |   /,'-----'.\   |/ (')(') \|
+   \   ._.   /      \ \    / /   {_/(') (')\_}   \   __   /
+   ,>-_,,,_-<.       >'=jf='<     `.   _   .'    ,'--__--'.
+ /      .      \    /        \     /'-___-'\    /    :|    \
+(_)     .     (_)  /          \   /         \  (_)   :|   (_)
+ \_-----'____--/  (_)        (_) (_)_______(_)   |___:|____|
+  \___________/     |________|     \_______/     |_________|        
+"
+                );
+                break;
+            case 3:
+                Terminal.WriteLine(@"
+ _____   _____   _____   _____    _____  
+|  _  \ | ____| | ____| |  _  \  /  ___/ 
+| |_| | | |__   | |__   | |_| |  | |___  
+|  _  { |  __|  |  __|  |  _  /  \___  \ 
+| |_| | | |___  | |___  | | \ \   ___| | 
+|_____/ |_____| |_____| |_|  \_\ /_____/ 
+"
+                );
+                Terminal.WriteLine("Beers on you, smartass!");
+                break;
+            default:
+                Debug.LogError("Invalid level reached");
+                break;
+        }
+    }
 }
