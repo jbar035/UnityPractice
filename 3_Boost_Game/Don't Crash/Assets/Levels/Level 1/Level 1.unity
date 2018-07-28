@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 1329257966}
   m_IndirectSpecularColor: {r: 0.43984944, g: 0.48035228, b: 0.52558845, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -781,15 +781,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4879418075155182, guid: 67ff2d0bdb8509f4e980895a59a8b108, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -0.27
+      value: -2.25
       objectReference: {fileID: 0}
     - target: {fileID: 4879418075155182, guid: 67ff2d0bdb8509f4e980895a59a8b108, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 18.99
+      value: 18.92
       objectReference: {fileID: 0}
     - target: {fileID: 4879418075155182, guid: 67ff2d0bdb8509f4e980895a59a8b108, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -46.61
+      value: -49.93
       objectReference: {fileID: 0}
     - target: {fileID: 4879418075155182, guid: 67ff2d0bdb8509f4e980895a59a8b108, type: 2}
       propertyPath: m_LocalRotation.x
@@ -1568,6 +1568,11 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34f5ba6bcf844574c9ffac4ae152798e, type: 2}
   m_IsPrefabAsset: 0
+--- !u!108 &1329257966 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 108956170226738168, guid: fd0782374687543449b7971dada0f61b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1042451037}
 --- !u!4 &1532242269 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4159897540450436, guid: 4c16d07aaf9794c26b9418d6615eb90b,
